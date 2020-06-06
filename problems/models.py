@@ -30,7 +30,7 @@ def output_file_upload(instance, filename):
 class Problem(models.Model):
     problem_setter = models.ForeignKey(user, on_delete=models.CASCADE)
     name = models.CharField(max_length=40)
-    description = models.TextField(max_length=500)
+    problem_statement = models.TextField(max_length=500)
     input_file = models.FileField(upload_to=input_file_upload, null=True, blank=True)
     output_file = models.FileField(upload_to=output_file_upload, null=True, blank=True)
 
