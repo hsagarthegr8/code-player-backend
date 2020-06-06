@@ -42,7 +42,7 @@ class User(AbstractBaseUser):
     date_joined = models.DateField(auto_now_add=True)
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
+    REQUIRED_FIELDS = ['email', 'password']
 
     objects = UserManager()
 
