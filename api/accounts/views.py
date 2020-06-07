@@ -12,3 +12,12 @@ class UserViewSet(ModelViewSet):
         if self.action == 'create':
             return [AllowAny()]
         return super(UserViewSet, self).get_permissions(*args, **kwargs)
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+
+        if pk == 'me':
+            return self.request.user
+
+        return super(UserViewSet, self).get_object()
+
