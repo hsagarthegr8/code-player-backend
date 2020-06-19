@@ -4,7 +4,7 @@ from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh
 
 
 from .accounts.views import UserViewSet
-from .problems.views import ProblemViewSet
+from .problems.views import ProblemViewSet, Playground
 
 router = DefaultRouter()
 
@@ -13,5 +13,6 @@ router.register('problems', ProblemViewSet, basename='problems')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('login', obtain_jwt_token)
+    path('login', obtain_jwt_token),
+    path('playground/', Playground.as_view())
 ]

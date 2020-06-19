@@ -1,6 +1,10 @@
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.generics import CreateAPIView
 
-from .serializers import ProblemListSerializer, ProblemDetailsSerializer, Problem
+
+from .serializers import ProblemListSerializer, ProblemDetailsSerializer, PlaygroundSerializer
+from problems.models import Problem
+
 
 class ProblemViewSet(ModelViewSet):
     queryset = Problem.objects.all()
@@ -19,4 +23,8 @@ class ProblemViewSet(ModelViewSet):
             return self.serializer_action_classes[self.action]
         except (KeyError, AttributeError):
             return super(ProblemViewSet, self).get_serializer_class()
-        
+
+
+class Playground(CreateAPIView):
+    serializer_class = PlaygroundSerializer
+
