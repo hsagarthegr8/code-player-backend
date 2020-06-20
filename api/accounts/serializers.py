@@ -1,12 +1,23 @@
-from accounts.models import User
+from accounts.models import User, Profile
 
 from rest_framework.serializers import ModelSerializer, CharField
 
 
+class ProfileSerializer(ModelSerializer):
+    occupation = CharField(source='get_occupation_display')
+
+    class Meta:
+        model = Profile
+        exclude = ('user',)
+        depth = 1
+
+
 class UserSerializer(ModelSerializer):
+    profile = ProfileSerializer(read_only=True)
+
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password', 'profile')
         extra_kwargs = {
             'password': {'write_only': True}
         }

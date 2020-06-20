@@ -13,6 +13,10 @@ class UserViewSet(ModelViewSet):
             return [AllowAny()]
         return super(UserViewSet, self).get_permissions(*args, **kwargs)
 
+    def get_serializer_class(self):
+        print(self.request.method)
+        return super(UserViewSet, self).get_serializer_class()
+
     def get_object(self):
         pk = self.kwargs.get('pk')
 

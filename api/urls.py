@@ -13,6 +13,6 @@ router.register('problems', ProblemViewSet, basename='problems')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('login', obtain_jwt_token),
+    path('login/', obtain_jwt_token),
     path('playground/', Playground.as_view())
 ]
