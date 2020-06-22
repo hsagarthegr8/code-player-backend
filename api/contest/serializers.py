@@ -3,7 +3,7 @@ import subprocess
 import os
 
 from contest.models import Problem, Contest
-from contest.utils import run_code
+from contest.utils import run_code, ensure_dir
 
 
 class ProblemListSerializer(serializers.ModelSerializer):
@@ -58,8 +58,14 @@ class PlaygroundSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user = self.context.get('request').user
-        filepath = f'files/problems/{user.username}/playground.py'
-        input_path = f'files/problems/{user.username}/playground.in'
+        directory = 'files/PLAYGROUND'
+        ensure_dir(directory)
+        source_file = f'{user.username}.py'
+        input_file = f'{user.username}.in'
+
+        filepath = os.path.join(directory, source_file)
+        input_path = os.path.join(directory, input_file)
+
         with open(filepath, 'w') as file:
             file.write(validated_data['source_code'])
 

@@ -1,5 +1,11 @@
 import time
 import subprocess
+import os
+
+
+def ensure_dir(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
 
 def timeit(method):

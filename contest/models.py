@@ -1,15 +1,11 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from .utils import ensure_dir
 
 import os
 
 
 user = get_user_model()
-
-
-def ensure_dir(directory):
-    if not os.path.exists(directory):
-        os.makedirs(directory)
 
 
 def input_file_upload(instance, filename):
