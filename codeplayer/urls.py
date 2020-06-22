@@ -14,10 +14,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf import settings
 from django.urls import path, include
+from django.views.generic import TemplateView
+from rest_framework.schemas import get_schema_view
+from djangorestframework_camel_case.render import CamelCaseJSONRenderer
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api/', include('api.urls'))
+    path('api/', include('api.urls')),
+    path('redoc/', TemplateView.as_view(
+        template_name='redoc.html',
+        extra_context={'schema_url': 'openapi-schema'}
+    ), name='redoc'),
+    path('openapi', get_schema_view(
+        title="Code Player API",
+        renderer_classes=(CamelCaseJSONRenderer, ),
+        description="API Documentation for Code Player",
+        version="1.0.0",
+    ), name='openapi-schema'),
+
 ]

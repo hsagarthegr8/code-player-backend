@@ -2,20 +2,46 @@ from rest_framework import serializers
 import subprocess
 import os
 
-from problems.models import Problem
-from problems.utils import run_code
+from contest.models import Problem, Contest
+from contest.utils import run_code
 
 
 class ProblemListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problem
-        fields = ('id', 'name')
+        fields = ('problem_code', 'name', 'accuracy',
+                  'total_submissions', 'successful_submissions')
 
 
 class ProblemDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problem
         exclude = ('input_file', 'output_file')
+        extra_kwargs = {
+            'contest': {'read_only': True},
+            'problem_setter': {'read_only': True}
+        }
+
+    def create(self, validated_data):
+        contest = self.context.get('view').kwargs.get('contest')
+        user = self.context.get('request').user
+        validated_data['contest'] = Contest.objects.get(pk=contest)
+        validated_data['problem_setter'] = user
+        return super(ProblemDetailsSerializer, self).create(validated_data)
+
+
+class ContestListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contest
+        fields = ('name', 'contest_code', 'start_date', 'end_date')
+
+
+class ContestDetailsSerializer(serializers.ModelSerializer):
+    problems = ProblemListSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Contest
+        fields = ('name', 'contest_code', 'start_date', 'end_date', 'problems')
 
 
 class PlaygroundSerializer(serializers.Serializer):

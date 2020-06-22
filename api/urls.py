@@ -4,12 +4,15 @@ from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh
 
 
 from .accounts.views import UserViewSet
-from .problems.views import ProblemViewSet, Playground
+from .contest.views import ContestViewSet, ProblemViewSet, Playground
 
 router = DefaultRouter()
 
 router.register('accounts', UserViewSet, basename='accounts')
-router.register('problems', ProblemViewSet, basename='problems')
+router.register(r'(?P<contest>[^/.]+)/problems',
+                ProblemViewSet, basename='problems')
+router.register('contests', ContestViewSet, basename='contests')
+
 
 urlpatterns = [
     path('', include(router.urls)),

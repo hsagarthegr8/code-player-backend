@@ -4,6 +4,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 
 
 class UserViewSet(ModelViewSet):
+    '''
+    list: List All the Users
+    create: Create a new user i.e. Register
+    retrieve: Retrieve a single user instance based on username
+    '''
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
@@ -14,7 +19,6 @@ class UserViewSet(ModelViewSet):
         return super(UserViewSet, self).get_permissions(*args, **kwargs)
 
     def get_serializer_class(self):
-        print(self.request.method)
         return super(UserViewSet, self).get_serializer_class()
 
     def get_object(self):
@@ -24,4 +28,3 @@ class UserViewSet(ModelViewSet):
             return self.request.user
 
         return super(UserViewSet, self).get_object()
-
